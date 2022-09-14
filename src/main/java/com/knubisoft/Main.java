@@ -29,7 +29,7 @@ public class Main {
         private final String inputLink;
         private static Logger log = LogManager.getRootLogger();
 
-        public LinkChecker(String inputLink){
+        public LinkChecker(String inputLink) {
             this.inputLink = inputLink;
         }
 
@@ -40,26 +40,31 @@ public class Main {
             Document doc = con.get();
             for (Element linkTag : doc.select("a[href]")) {
                 String link = linkTag.attr("href");
-                if (link.matches("^(http|https).+")) {
-                    Connection connect = Jsoup.connect(link);
-                    Document document = connect.get();
-                    Connection connection = document.connection();
-                    int statusCode = connection.response().statusCode();
-                    if (statusCode != STATUS_OK) {
+                if (!isAbsolute(link)) {
+                    link = inputLink + link.substring(1);
+                }
+                Connection connect = Jsoup.connect(link);
+                Document document = connect.get();
+                Connection connection = document.connection();
+                int statusCode = connection.response().statusCode();
+                if (statusCode != STATUS_OK) {
 //                        log.warn(link + ": status code = [" + statusCode + "]");
-                        System.out.println(link + ": status code = [" + statusCode + "]");
-                    } else if (!alreadyCheckedLinks.contains(link)) {
-                        alreadyCheckedLinks.add(link);
+                    System.out.println(link + ": status code = [" + statusCode + "]");
+                } else if (!alreadyCheckedLinks.contains(link)) {
+                    alreadyCheckedLinks.add(link);
 //                        log.info();
-                        System.out.println(link + ": status code = [" + statusCode + "]");
-                        new LinkChecker(link).start();
-                        break;
-                    }
-                } else {
+                    System.out.println(link + ": status code = [" + statusCode + "]");
+                    new LinkChecker(link).start();
+                }
+                /*} else {
                     System.out.println(link + ": is malformed. Should be an absolute URL, and starts with 'http://' or 'https://'");
 //                    log.warn(link + ": is malformed. Should be an absolute URL, and starts with 'http://' or 'https://'");
-                }
+                }*/
             }
+        }
+
+        private boolean isAbsolute(String link) {
+            return link.matches("^(http|https).+") && !link.contains(inputLink);
         }
     }
 }
