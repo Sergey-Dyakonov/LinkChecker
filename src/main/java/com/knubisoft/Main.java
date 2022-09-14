@@ -41,7 +41,7 @@ public class Main {
             for (Element linkTag : doc.select("a[href]")) {
                 String link = linkTag.attr("href");
                 if (!isAbsolute(link)) {
-                    link = inputLink + link.substring(1);
+                    link  = inputLink + link.substring(1);
                 }
                 Connection connect = Jsoup.connect(link);
                 Document document = connect.get();
