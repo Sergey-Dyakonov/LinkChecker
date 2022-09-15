@@ -9,7 +9,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,7 +46,8 @@ public class LinkCheckerThread extends Thread {
         }
     }
 
-    private void checkLink(String link) throws IOException {
+    @SneakyThrows
+    private void checkLink(String link) {
         if (!isCommonLink(link)) {
             return;
         }
@@ -67,7 +67,8 @@ public class LinkCheckerThread extends Thread {
         return link.matches("^(https|http).+");
     }
 
-    private int getStatusCode(String link) throws IOException {
+    @SneakyThrows
+    private int getStatusCode(String link) {
         return Jsoup.connect(link).get().connection().response().statusCode();
     }
 
