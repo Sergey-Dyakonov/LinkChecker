@@ -1,13 +1,15 @@
 package com.knubisoft;
 
 import lombok.SneakyThrows;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
 
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
-        new LinkCheckerThread("https://www.work.ua/", "").start();
+        LinkChecker linkChecker = new LinkChecker();
+        Map<String, Integer> map = linkChecker.collectLinks("https://freemaxpictures.com/", "https://freemaxpictures.com/");
+        map.forEach((s, i) -> System.out.println(s + ": " + i));
     }
 }
 
