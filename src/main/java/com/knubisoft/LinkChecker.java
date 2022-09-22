@@ -18,7 +18,7 @@ import java.util.concurrent.RecursiveTask;
 @NoArgsConstructor
 @Setter
 public class LinkChecker {
-    private static final List<String> alreadyCheckedLinks = Collections.synchronizedList(new ArrayList<>());
+    private static final Set<String> alreadyCheckedLinks = Collections.synchronizedSet(new HashSet<>());
     private static final Logger log = LogManager.getLogger(LinkChecker.class);
     private static final int STATUS_OK = 200;
     private String siteLink;
