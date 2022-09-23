@@ -76,11 +76,13 @@ public class LinkChecker {
     private int getStatusCode(String link) {
         try {
             return Jsoup.connect(link).execute().statusCode();
-        } catch (HttpStatusException statusException) {
-            return statusException.getStatusCode();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (e instanceof HttpStatusException) {
+                return ((HttpStatusException) e).getStatusCode();
+            } else {
+                log.error(e);
+            }
         }
-        return 0;
+        return -1;
     }
 }
