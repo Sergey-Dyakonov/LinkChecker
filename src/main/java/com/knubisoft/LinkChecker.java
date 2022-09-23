@@ -37,9 +37,6 @@ public class LinkChecker {
         @Override
         @SneakyThrows
         protected Map<String, Integer> compute() {
-            System.out.println(Thread.currentThread().getName());
-            System.out.println(link);
-
             Map<String, Integer> urlCode = new LinkedHashMap<>();
             List<CheckLinkTask> taskList = new ArrayList<>();
             if (getStatusCode(link) == STATUS_OK) {
@@ -80,7 +77,7 @@ public class LinkChecker {
             if (e instanceof HttpStatusException) {
                 return ((HttpStatusException) e).getStatusCode();
             } else {
-                log.error(e);
+                log.error(link + " - " + e);
             }
         }
         return -1;
